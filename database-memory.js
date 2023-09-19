@@ -5,8 +5,15 @@ export class DatabaseMemory{
     #videos = new Map()
 
     list(){
-        const videoId = randomUUID()
-        return this.#videos.values()
+        return Array.from(this.#videos.entries()).map((videoArray) => {
+            const id = videoArray[0]
+            const data = videoArray[1]
+
+            return {
+                id,
+                ...data,
+            }
+        })
 
     }
 

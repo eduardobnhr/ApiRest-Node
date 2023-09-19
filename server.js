@@ -7,29 +7,45 @@ const server = fastify()
 const database = new DatabaseMemory()
 
 
-server.post('/videos', (request, reply)=> {
-    const body = request.body
-
-    console.log(body)
+server.post('/videos', (request, reply) => {
+    const { title, description, duration } = request.body
+ 
     database.create({
-        title: 'video 01',
-        description: 'esse e o video 01',
-        duration: 180,
+        title,
+        description,
+        duration,
     })
     return reply.status(201).send()
 })
-server.get('/videos', ()=> {
-    return 'hello teste'
+
+server.get('/videos', () => {
+    const videos = database.list()
+
+    console.log(videos)
+
+    return videos
 })
 
 
 
-server.put('/videos/:id', ()=> {
-    return 'hello node'
+server.put('/videos/:id', (request, reply)=> {
+    const videoId = request.params.id
+    const { title, description, duration } = request.body
+    
+     database.update(videoId, {
+        title,
+        description,
+        duration,
+    })
+    return reply.status(204).send()
 })
 
-server.delete('/videos/:id', ()=> {
-    return 'hello node'
+server.delete('/videos/:id', (request, reply)=> {
+    const videoId = request.params.id
+
+    database.delete(videoId)
+
+    return reply.status(204).send()
 })
 
 
