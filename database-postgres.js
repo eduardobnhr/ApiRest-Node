@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto"
 
-export class DatabaseMemory{
+export class DatabasePostgres{
 
     #videos = new Map()
 
