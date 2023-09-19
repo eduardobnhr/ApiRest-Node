@@ -1,39 +1,33 @@
-import { randomUUID } from "crypto"
+import { randomUUID } from "node:crypto"
+import { sql } from "./db.js"
 
 export class DatabasePostgres{
+   async list(search){
+        let videos 
 
-    #videos = new Map()
-
-    list(search){
-        return Array.from(this.#videos.entries())
-        .map((videoArray) => {
-            const id = videoArray[0]
-            const data = videoArray[1]
-
-            return {
-                id,
-                ...data,
-            }
-        })
-        .filter(video => {
-            if (search) {
-                return video.title.inclues(seach)
-            }
-            return true
-        })
-
+        if(search){
+            videos = await sql`select * from videos where title ilike "%${search}%`
+        }
+        else {
+            video = await sql`select * from videos`
+        }
+        return videos
     }
 
-    create(video) {
+    async create(video) {
         const videoId = randomUUID()
-        this.#videos.set(videoId, video)
+
+        const {title, description, duration} = video
+
+        await sql`insert into videos(id, title, description, duration) VALUES(${videoId},${title}, ${description}, ${duration})`
+        
     }
 
     update(id, video) {
-        this.#videos.set(id, video)
+        
     }
     delete(id) {
-        this.#videos.delete(id)
+       
     }
 
 }

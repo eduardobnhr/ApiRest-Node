@@ -1,5 +1,5 @@
-import 'dotenv/config'
-import postgres from "postgres";
+import 'dotenv/config';
+import postgres from 'postgres';
 
 
 const postgres = require('postgres');
